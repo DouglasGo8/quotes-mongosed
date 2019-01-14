@@ -3,6 +3,7 @@ const express = require('express');
 const body_p = require('body-parser');
 const app = express();
 const JSON_ = require('circular-json');
+const OS = require('os');
 
 const SERVER_HOST = process.env.SERVER_HOST || 'localhost';
 var db;
@@ -13,15 +14,16 @@ MongoClient.connect(`mongodb://${SERVER_HOST}:27017/quotes`, { useNewUrlParser: 
     db = callback.db('quotes');
 });
 
-app.use(body_p.urlencoded({
-    extended: true
-}));
+/**
+ * 
+ */
+app.use(body_p.urlencoded({ extended: true }));
 
 app.use(body_p.json());
 
 app.get('/', (req, resp) => {
     resp.setHeader('Content-Type', 'application/json');
-    resp.send(JSON_.stringify({ 'msg': 'Liveness Probe' }));
+    resp.send(JSON_.stringify({ 'msg': `Liveness Probe at ${OS.hostname()}` }));
 });
 
 
